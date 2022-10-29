@@ -1,0 +1,8 @@
+app:
+    redmine:
+        url: http://10.10.8.151:8200/
+        #url: http://161.202.91.233:8300/
+        apiAccessKey: 4a23c3474c02f6cb0c3961022462cfaec505b216
+server:
+  servlet:
+    context-path: /tool

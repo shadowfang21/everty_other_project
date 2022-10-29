@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.2</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	
+	<packaging>${build.packaging}</packaging>
+	
+	<groupId>com.sf.tool</groupId>
+	<artifactId>scsb_helper</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>scsb_helper</name>
+	<description>scsb_helper</description>
+	
+	<properties>
+		<org.mapstruct.version>1.5.0.RC1</org.mapstruct.version>
+		<org.projectlombok.version>1.18.24</org.projectlombok.version>
+		<java.version>11</java.version>
+		<build.name>scsb-helper</build.name>
+		<build.packaging>war</build.packaging>
+	</properties>
+
+	<dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/com.taskadapter/redmine-java-api -->
+			<dependency>
+			  <groupId>com.taskadapter</groupId>
+			  <artifactId>redmine-java-api</artifactId>
+		      <version>4.0.0.rc5-SNAPSHOT</version>
+            </dependency>
+            
+        </dependencies>
+    </dependencyManagement>
+	
+	<dependencies>
+		<dependency>
+            <groupId>com.taskadapter</groupId>
+            <artifactId>redmine-java-api</artifactId>
+        </dependency>
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+	        <groupId>org.mapstruct</groupId>
+	        <artifactId>mapstruct</artifactId>
+	        <version>${org.mapstruct.version}</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.mapstruct</groupId>
+		    <artifactId>mapstruct-processor</artifactId>
+		    <version>${org.mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.1</version>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.8</version>
+        </dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+		<dependency>
+             <groupId>commons-io</groupId>
+             <artifactId>commons-io</artifactId>
+             <version>2.7</version>
+        </dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+<!--		<dependency>-->
+<!--           <groupId>org.springframework.boot</groupId>-->
+<!--           <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--           <scope>provided</scope>-->
+<!--        </dependency>-->
+	</dependencies>
+
+	<build>
+	   <finalName>${build.name}</finalName>
+		<plugins>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+<!--                     <compilerVersion>1.8</compilerVersion> -->
+                    <encoding>UTF-8</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+			                <groupId>org.projectlombok</groupId>
+			                <artifactId>lombok</artifactId>
+			                <version>${org.projectlombok.version}</version>
+			            </path>
+			            <!-- This is needed when using Lombok 1.18.16 and above -->
+			            <path>
+			                <groupId>org.projectlombok</groupId>
+			                <artifactId>lombok-mapstruct-binding</artifactId>
+			                <version>0.2.0</version>
+			            </path>
+	                    <path>
+	                        <groupId>org.mapstruct</groupId>
+	                        <artifactId>mapstruct-processor</artifactId>
+	                        <version>${org.mapstruct.version}</version>
+	                    </path>
+	                    <!-- other annotation processors -->
+	                </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>build-helper-maven-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>add-source</id>
+			            <phase>generate-sources</phase>
+			            <goals>
+			                <goal>add-source</goal>
+			            </goals>
+			            <configuration>
+			                <sources>
+			                    <source>${project.build.directory}/generated-sources/annotations/</source>
+			                </sources>
+			            </configuration>
+			        </execution>
+			    </executions>
+			 </plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-antrun-plugin</artifactId>
+               <executions>
+                  <execution>
+                     <id>scp-to-remote</id>
+                     <phase>package</phase>
+                     <goals>
+                        <goal>run</goal>
+                     </goals>
+                     <configuration>
+                        <target>
+                           <!-- keyfile+passphrase or  password, choose one -->
+                           <!--
+                                            <scp localFile="${project.basedir}/target/qos-spark-1.0.jar"
+                                              remoteToFile="root@ip_addr:/usr/sanss" verbose="true"
+                                              keyfile="C:\Users\shengw\.ssh\ip_addr\id_rsa"
+                                              passphrase="">
+                                            </scp>
+                                             -->
+                           <scp localFile="${project.basedir}/target/${build.name}.${build.packaging}" 
+                           remoteToFile="scsb@10.10.8.151:/opt/wlp/usr/servers/jenkins/dropins/${build.name}.${build.packaging}"
+                           verbose="true" 
+                           password="Scsb1qaz"
+                           trust="true" />
+                           <!-- calls deploy script -->
+<!--                           <sshexec host="ip_addr" -->
+<!--                           trust="yes" -->
+<!--                           username="root" -->
+<!--                           password="your_pass" -->
+<!--                           command="sudo systemctl restart ${project.name}" />-->
+                           <!-- SSH -->
+<!--                           <taskdef name="sshexec" -->
+<!--                           classname="org.apache.tools.ant.taskdefs.optional.ssh.SSHExec" -->
+<!--                           classpathref="maven.plugin.classpath" />-->
+                        </target>
+                     </configuration>
+                  </execution>
+               </executions>
+               <!-- libraries for scp impl      -->
+               <!-- antrun doesn't use os's scp -->
+               <dependencies>
+                  <dependency>
+                     <groupId>com.jcraft</groupId>
+                     <artifactId>jsch</artifactId>
+                     <version>0.1.53</version>
+                  </dependency>
+                  <dependency>
+                     <groupId>ant</groupId>
+                     <artifactId>ant-jsch</artifactId>
+                     <version>1.6.5</version>
+                  </dependency>
+               </dependencies>
+            </plugin>
+		</plugins>
+	</build>
+
+</project>

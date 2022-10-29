@@ -1,0 +1,10 @@
+.project
+.classpath
+.settings/
+target/
+.factorypath
+.sts4-cache
+.metadata/
+.mylyn/
+.plugins/
+*.log
