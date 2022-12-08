@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+      maximumPoolSize: 1
+    driver-class-name: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@10.10.8.158:1521:eloandev
+    url: jdbc:oracle:thin:@161.202.91.235:1521:eloan
+    username: eloan
+    password: eloan
+#  datasource:
+#    hikari:
+#      connectionTimeout: 30000
+#      idleTimeout: 600000
+#      maxLifetime: 1800000
+#      maximumPoolSize: 500
+#      schema: TERADATA
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@10.10.2.140:1521:rd11g
+#    username: eloan
+#    password: eloan0331    

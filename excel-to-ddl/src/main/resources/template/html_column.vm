@@ -1,0 +1,68 @@
+#foreach($column in $columns)
+<div class="p-grid">
+    <div class="p-col-2 bootstrap_default col-title">
+        #if(${column.notNull} == 'Y')
+        <i class="dot-left"></i><b>${column.pureComment}</b>
+        #else
+        <b>${column.pureComment}</b>
+        #end
+    </div>
+    <div class="p-col-4 bootstrap_default col-content">
+        #if(${column.htmlDataType} == 'RADIO')
+        <code-table key="${column.codeListId}" type="radio" formControlName="${column.javaColumnName}"></code-table>
+        #end
+        #if(${column.htmlDataType} == 'CHECK')
+        <code-table key="${column.codeListId}" type="checkbox" spliter="," formControlName="${column.javaColumnName}"></code-table>
+        #end
+        #if(${column.htmlDataType} == 'DROP')
+        <code-table key="${column.codeListId}" type="dropdown" formControlName="${column.javaColumnName}"></code-table>
+        #end
+        #if(${column.htmlDataType} == 'NUMBER')
+        <p-inputNumber [max]="${column.getNumberMax()}" formControlName="${column.javaColumnName}" class="text-right" inputStyleClass="w-200px"></p-inputNumber>
+        #end
+        #if(${column.htmlDataType} == 'DATE')
+        <p-calendar dataType="string" [locale]="calendarI18n" formControlName="${column.javaColumnName}" [showIcon]="true"
+            icon="pi pi-calendar" class="pi-calendar-btn" dateFormat="yy/mm/dd" [monthNavigator]="true" [yearNavigator]="true">
+        </p-calendar>
+        #end
+        #if(${column.htmlDataType} == 'TEXT')
+        <input type="text" pInputText formControlName="${column.javaColumnName}" maxlength="${column.inputLength}">
+        #end
+        #if(${column.htmlDataType} == 'RATE')
+        <eloan-input-percentage formControlName="${column.javaColumnName}" [minFractionDigits]="${column.decimal}" [maxFractionDigits]="${column.decimal}" [max]="999.99" [min]="0" [maxlength]="${column.length}" ></eloan-input-percentage>
+        #end
+        <eloan-display-error [control]="this.form.get('${column.javaColumnName}')"></eloan-display-error>
+    </div>
+</div>
+#end
+
+<div class="p-grid">
+#foreach($column in $columns)
+    <div class="col-c10-4 bootstrap_default col-title text-center"><b>${column.pureComment}</b></div>
+#end
+</div>
+<div class="p-grid">
+#foreach($column in $columns)
+    #if(${column.htmlDataType} == 'RADIO')
+    <div class="col-c20-4 col-content bootstrap_default"><b>{{data.${column.javaColumnName} | codeTable:'${column.codeListId}' | async}}</b></div>
+    #end
+    #if(${column.htmlDataType} == 'CHECK')
+    <div class="col-c20-4 col-content bootstrap_default"><b>{{data.${column.javaColumnName} | codeTable:'${column.codeListId}' | async}}</b></div>
+    #end
+    #if(${column.htmlDataType} == 'DROP')
+    <div class="col-c20-4 col-content bootstrap_default"><b>{{data.${column.javaColumnName} | codeTable:'${column.codeListId}' | async}}</b></div>
+    #end
+    #if(${column.htmlDataType} == 'NUMBER')
+    <div class="col-c20-4 col-content bootstrap_default"><b class="text-number">{{data.${column.javaColumnName} | number}}</b></div>
+    #end
+    #if(${column.htmlDataType} == 'DATE')
+    <div class="col-c20-4 col-content bootstrap_default"><b>{{data.${column.javaColumnName} | date:'yyyy/MM/dd}}</b></div>
+    #end
+    #if(${column.htmlDataType} == 'TEXT')
+    <div class="col-c20-4 col-content bootstrap_default"><b>{{data.${column.javaColumnName}}}</b></div>
+    #end
+    #if(${column.htmlDataType} == 'RATE')
+    <div class="col-c20-4 col-content bootstrap_default"><b class="text-number">{{data.${column.javaColumnName} | percentage}}}</b></div>
+    #end
+#end
+</div>

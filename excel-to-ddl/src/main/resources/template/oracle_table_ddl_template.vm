@@ -1,0 +1,53 @@
+BEGIN
+  EXECUTE IMMEDIATE 'DROP SEQUENCE ' || 'S_${tableName}__LIST_ID';
+EXCEPTION
+  WHEN OTHERS THEN
+    IF SQLCODE != -2289 THEN
+      RAISE;
+    END IF;
+END;
+/
+
+CREATE SEQUENCE S_${tableName}__LIST_ID start with 1 increment by 1;
+
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE ' || '${tableName}';
+EXCEPTION
+  WHEN OTHERS THEN
+    IF SQLCODE != -00942 THEN
+      RAISE;
+    END IF;
+END;
+/
+
+CREATE TABLE ${tableName}(
+#foreach($column in $columns)
+	#if(${column.dateType} == 'NUMBER')
+	${column.columnName} ${column.dateType}(${column.length}, ${column.decimal})#if(${column.notNull} == 'Y') NOT NULL#end,
+	#end
+	#if(${column.dateType} == 'CLOB')
+	${column.columnName} ${column.dateType}#if(${column.notNull} == 'Y') NOT NULL#end,
+	#end
+	#if(${column.dateType} == 'VARCHAR2')
+	${column.columnName} ${column.dateType}(${column.length})#if(${column.notNull} == 'Y') NOT NULL#end,
+	#end
+	#if(${column.dateType} == 'DATE' || ${column.dateType} == 'TIMESTAMP')
+	${column.columnName} ${column.dateType}#if(${column.notNull} == 'Y') NOT NULL#end,
+	#end
+#end
+#foreach($column in $columns)
+	#if(${column.columnName} == 'LIST_ID')
+	CONSTRAINT PK_${tableName} PRIMARY KEY(LIST_ID)
+	#end 
+#end
+);
+
+COMMENT ON TABLE ${tableName} IS '${tableDesc}';
+#foreach($column in $columns)
+#if(${column.columnName} == 'LIST_ID')
+COMMENT ON COLUMN ${tableName}.${column.columnName} IS 'S_${tableName}__LIST_ID';
+#else
+COMMENT ON COLUMN ${tableName}.${column.columnName} IS '${column.comment}';
+#end
+#end
+

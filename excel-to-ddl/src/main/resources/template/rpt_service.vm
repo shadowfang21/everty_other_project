@@ -1,0 +1,28 @@
+package com.scsb.eloan.report.plm.service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.scsb.eloan.cmn.service.CmnReportService;
+
+/**
+ *  ${rptName}
+ * @author JohnFang21
+ *
+ */
+@Service("${rptId}ReportService")
+public class ${rptId}ReportService extends AbstractSingleReportService {
+    
+    @Autowired
+    private CmnReportService cmnReportService;
+    
+    @Override
+    protected Map<String, Object> getDataMap(String caseSn, String rptId) {
+        Map<String, Object> map = new HashMap<>();
+        return map;
+    }
+
+}
