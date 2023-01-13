@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 
@@ -138,6 +139,41 @@ public class InterRedmineOperator {
 				new RequestParam("status_id", "closed"),
 				new RequestParam("closed_on", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
 	}
+	
+	public String exportInterToFileByProject(LocalDate date) throws RedmineException, IOException {
+        String format = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        
+        RedmineManager mgr = RedmineManagerFactory.createWithApiKey(uri, apiAccessKey);
+
+//        mgr.getProjectManager().getProjects().stream()
+//            .forEach(p -> System.out.println(p.getId() + p.getIdentifier()));
+        
+        Stream.of("34","35","37")
+            .flatMap(projectId -> {
+                try {
+                    return mgr.getIssueManager().getIssues(new Params()
+                            .add("project_id", projectId)
+                            .add("cf_5","需求變更")).getResults().stream();
+                } catch (RedmineException e) {
+                    throw new RuntimeException(e);
+                }
+            })
+            .map(IssueModel::new)
+//            .filter(issue -> issue.getStatusId().intValue() != 15 && issue.getStatusId().intValue() != 5)
+//            .sorted(Comparator.comparing(IssueModel::getId))
+            .peek(i -> {
+                exportPdf(mgr, i.getId());
+            })
+            .peek(s -> log.info(s.info()))
+//            .map(IssueModel::toString)
+            .collect(Collectors.toList());
+//        
+//        final String f = fileHandler.getInterExportFile(format);
+//        
+//        FileUtils.writeLines(new File(f), StandardCharsets.UTF_8.name(), c, "\n");
+        
+        return "";
+    }
 	
 	public String exportInterToFile(LocalDate date) throws RedmineException, IOException {
 		String format = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));

@@ -11,7 +11,6 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sf.redmine.batch.op.redmine.InterRedmineOperator;
-import com.sf.redmine.batch.op.redmine.OuterRedmineOperator;
 import com.taskadapter.redmineapi.RedmineException;
 import com.taskadapter.redmineapi.bean.Issue;
 
@@ -48,16 +47,17 @@ public class TransferRedmineIssueApplication {
 		LocalFileHandler fileHandler = new LocalFileHandler();
 		LocalDate date = LocalDate.of(2022,5,16);
 		
-		String target = "6455,6449,6448,6446,6445,6444,6443";
+//		String target = "6455,6449,6448,6446,6445,6444,6443";
 		
 		
 		InterRedmineOperator inter = new InterRedmineOperator(fileHandler);
+		inter.exportInterToFileByProject(LocalDate.now());
 //		inter.importOuterStatus(fileHandler.getOuterExportFile());
 //		inter.exportInterToFile(date);
 //		inter.closeIssue(target.split(","));
 		
-		OuterRedmineOperator outer = new OuterRedmineOperator(fileHandler);
-		outer.exportOuterToFile();
+//		OuterRedmineOperator outer = new OuterRedmineOperator(fileHandler);
+//		outer.exportOuterToFile();
 //		outer.importInto(fileHandler.getInterExportFile(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
 //		outer.closeIssue(target.split(","));
 	}
